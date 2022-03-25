@@ -69,7 +69,6 @@ func GetFileHistory(ctx *gin.Context) {
 // @Accept       json
 // @Produce      octet-stream
 // @Param        name   path      string  true  "文件名"
-// @Success      200  {object}
 // @Failure      400  {object} ResponseMessage
 // @Failure      416  {object} ResponseMessage
 // @Failure      500  {object} ResponseMessage
@@ -159,7 +158,6 @@ func setDownloadHeader(ctx *gin.Context, length int64, filename string) {
 // @Accept       json
 // @Produce      octet-stream
 // @Param        name   path      string  true  "文件名"
-// @Success      200  {object}
 // @Failure      400  {object} ResponseMessage
 // @Failure      416  {object} ResponseMessage
 // @Failure      500  {object} ResponseMessage

@@ -1,5 +1,16 @@
 basePath: /v1
 definitions:
+  api.TextMessage:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+    required:
+    - content
+    type: object
   github.com_dianbanjiu_online_share_api.ResponseMessage:
     properties:
       data: {}
@@ -134,6 +145,62 @@ paths:
       summary: 删除文件
       tags:
       - file
+    get:
+      consumes:
+      - application/json
+      description: 根据文件名获取指定文件
+      parameters:
+      - description: 文件名
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/octet-stream
+      responses:
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+        "416":
+          description: Requested Range Not Satisfiable
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+      summary: 根据文件名获取指定文件
+      tags:
+      - file
+    head:
+      consumes:
+      - application/json
+      description: 文件下载接口支持断点续传，此接口可用于获取请求头
+      parameters:
+      - description: 文件名
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/octet-stream
+      responses:
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+        "416":
+          description: Requested Range Not Satisfiable
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+      summary: 获取请求头
+      tags:
+      - file
   /v1/text:
     get:
       consumes:
@@ -236,6 +303,39 @@ paths:
           schema:
             $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
       summary: 删除文本记录
+      tags:
+      - text
+    get:
+      consumes:
+      - application/json
+      description: 获取指定文本记录
+      parameters:
+      - description: 文本记录的 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+            - properties:
+                message:
+                  $ref: '#/definitions/github.com_dianbanjiu_online_share_api.TextMessage'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+      summary: 获取指定文本记录
       tags:
       - text
 swagger: "2.0"

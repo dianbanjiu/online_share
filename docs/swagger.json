@@ -127,6 +127,48 @@
             }
         },
         "/v1/file/:name": {
+            "get": {
+                "description": "根据文件名获取指定文件",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "file"
+                ],
+                "summary": "根据文件名获取指定文件",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "文件名",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage"
+                        }
+                    },
+                    "416": {
+                        "description": "Requested Range Not Satisfiable",
+                        "schema": {
+                            "$ref": "#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage"
+                        }
+                    }
+                }
+            },
             "delete": {
                 "description": "删除文件",
                 "consumes": [
@@ -169,6 +211,48 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage"
+                        }
+                    }
+                }
+            },
+            "head": {
+                "description": "文件下载接口支持断点续传，此接口可用于获取请求头",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "file"
+                ],
+                "summary": "获取请求头",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "文件名",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage"
+                        }
+                    },
+                    "416": {
+                        "description": "Requested Range Not Satisfiable",
                         "schema": {
                             "$ref": "#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage"
                         }
@@ -293,6 +377,60 @@
             }
         },
         "/v1/text/:id": {
+            "get": {
+                "description": "获取指定文本记录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "text"
+                ],
+                "summary": "获取指定文本记录",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "文本记录的 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "$ref": "#/definitions/github.com_dianbanjiu_online_share_api.TextMessage"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage"
+                        }
+                    }
+                }
+            },
             "delete": {
                 "description": "删除文本记录",
                 "consumes": [
@@ -350,6 +488,23 @@
         }
     },
     "definitions": {
+        "api.TextMessage": {
+            "type": "object",
+            "required": [
+                "content"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
         "github.com_dianbanjiu_online_share_api.ResponseMessage": {
             "type": "object",
             "properties": {
