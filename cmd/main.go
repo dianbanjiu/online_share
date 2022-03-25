@@ -5,10 +5,10 @@ import (
 	"os"
 
 	_ "github.com/dianbanjiu/online_share/db"
-	_ "net/http/pprof"
 	_ "github.com/dianbanjiu/online_share/docs"
 	"github.com/dianbanjiu/online_share/router"
 	"github.com/urfave/cli/v2"
+	_ "net/http/pprof"
 )
 
 // @title           Online Share Swagger API

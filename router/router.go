@@ -2,7 +2,6 @@ package router
 
 import (
 	"context"
-	"io/fs"
 	"log"
 	"net/http"
 	"os"
@@ -50,7 +49,7 @@ func Start(addr string) {
 		log.Fatalln(err)
 	}
 	if _, err := os.Stat(api.BaseDir); os.IsNotExist(err) {
-		err := os.Mkdir(api.BaseDir, fs.FileMode(os.ModeDir|os.ModePerm))
+		err := os.Mkdir(api.BaseDir, os.ModeDir|os.ModePerm)
 		if err != nil {
 			log.Fatalln(err)
 		}
