@@ -1,0 +1,241 @@
+basePath: /v1
+definitions:
+  github.com_dianbanjiu_online_share_api.ResponseMessage:
+    properties:
+      data: {}
+      message:
+        type: string
+    type: object
+  github.com_dianbanjiu_online_share_api.TextMessage:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+    required:
+    - content
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: dianbanjiu@gmail.com
+    name: dianbanjiu
+    url: https://github.com/dianbanjiu/online_share
+  description: This is a server for text and file share.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Online Share Swagger API
+  version: "1.0"
+paths:
+  /v1/file:
+    get:
+      consumes:
+      - application/json
+      description: 获取历史文件
+      parameters:
+      - description: 页数
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: 每页的条目数
+        in: query
+        name: size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+            - properties:
+                message:
+                  items:
+                    type: string
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+      summary: 获取历史文件
+      tags:
+      - file
+    post:
+      consumes:
+      - multipart/form-data
+      description: 上传文件
+      parameters:
+      - description: 文件
+        in: body
+        name: file
+        required: true
+        schema: {}
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+      summary: 上传文件
+      tags:
+      - file
+  /v1/file/:name:
+    delete:
+      consumes:
+      - application/json
+      description: 删除文件
+      parameters:
+      - description: 文件名
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+            - properties:
+                message:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+      summary: 删除文件
+      tags:
+      - file
+  /v1/text:
+    get:
+      consumes:
+      - application/json
+      description: 获取历史文本记录
+      parameters:
+      - description: 页数
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: 每页的条目数
+        in: query
+        name: size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+            - properties:
+                message:
+                  items:
+                    $ref: '#/definitions/github.com_dianbanjiu_online_share_api.TextMessage'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+      summary: 获取历史文本记录
+      tags:
+      - text
+    post:
+      consumes:
+      - application/json
+      description: 新增文本
+      parameters:
+      - description: 文本内容
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/github.com_dianbanjiu_online_share_api.TextMessage'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+      summary: 新增文本
+      tags:
+      - text
+  /v1/text/:id:
+    delete:
+      consumes:
+      - application/json
+      description: 删除文本记录
+      parameters:
+      - description: 文本记录的 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+            - properties:
+                message:
+                  $ref: '#/definitions/github.com_dianbanjiu_online_share_api.TextMessage'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github.com_dianbanjiu_online_share_api.ResponseMessage'
+      summary: 删除文本记录
+      tags:
+      - text
+swagger: "2.0"
