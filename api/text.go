@@ -72,6 +72,38 @@ func GetTextHistory(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, responseMessage)
 }
 
+// GetTextById godoc
+// @Summary     获取指定文本记录
+// @Description  获取指定文本记录
+// @Tags         text
+// @Accept       json
+// @Produce      json
+// @Param        id   path      int  true  "文本记录的 ID"
+// @Success      200  {object}  ResponseMessage{message=TextMessage}
+// @Failure      400  {object} ResponseMessage
+// @Failure      500  {object} ResponseMessage
+// @Router       /v1/text/:id [get]
+func GetTextById(ctx *gin.Context) {
+	var responseMessage ResponseMessage
+	idStr := ctx.Param("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		responseMessage.Message = err.Error()
+		ctx.JSON(http.StatusBadRequest, responseMessage)
+		return
+	}
+
+	var message TextMessage
+	if err := db.DB.Where("id = ?", id).First(&message).Error; err != nil {
+		responseMessage.Message = err.Error()
+		ctx.JSON(http.StatusInternalServerError, responseMessage)
+		return
+	}
+
+	responseMessage.Data = message
+	ctx.JSON(http.StatusOK, responseMessage)
+}
+
 // AddText godoc
 // @Summary     新增文本
 // @Description  新增文本
