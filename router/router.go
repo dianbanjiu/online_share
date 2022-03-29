@@ -2,17 +2,15 @@ package router
 
 import (
 	"context"
-	"log"
-	"net/http"
-	"os"
-	"os/signal"
-	"time"
-
 	"github.com/dianbanjiu/online_share/api"
 	"github.com/dianbanjiu/online_share/db"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"log"
+	"net/http"
+	"os"
+	"os/signal"
 )
 
 func Route() *gin.Engine {
@@ -61,16 +59,16 @@ func Start(addr string) {
 		log.Fatalln(err)
 	}
 
+	var idle = make(chan struct{})
 	go func() {
 		quit := make(chan os.Signal)
 		signal.Notify(quit, os.Interrupt)
 		<-quit
-		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-		defer cancel()
-		if err := srv.Shutdown(ctx); err != nil {
+		if err := srv.Shutdown(context.Background()); err != nil && err != http.ErrServerClosed {
 			log.Fatalln("server shutdown err, ", err)
 		}
 		log.Println("server is exiting. ")
+		close(idle)
 	}()
-
+	<-idle
 }
